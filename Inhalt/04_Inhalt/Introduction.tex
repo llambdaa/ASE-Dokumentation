@@ -12,7 +12,7 @@ Waffen (\textit{Weapons}), Münzen (\textit{Coins}) und Herzen
 Während der Spieler sich durch die Räume bewegt, stößt er
 auf eine Palette unterschiedlicher Gegner (\textit{Spider}, 
 \textit{Skeleton}, {Zombie}, \textit{Ogre}). Diese besitzen auch
-unterschiedliche Fähigkeiten und versuchen den Spieler anzugreifen.
+unterschiedliche Fähigkeiten und versuchen den Spieler zu besiegen.
 Betritt der Spieler einen Raum, so wird dieser gesperrt, bis er alle
 darin befindlichen Gegner besiegt hat. Erst dann öffnen sich die Türen
 wieder und der Spieler kann in anliegende Räume laufen.
@@ -35,5 +35,56 @@ ASCII-Zeichen den Spielinhalt darstellt. Dabei helfen unterschiedliche
 Symbole und Farben den Inhalt zu verstehen.
 
 \section{Wie startet man die Applikation?}
+Voraussetzung ist \textbf{Java 19}. Optimalerweise wird das Programm
+in einem ANSI-fähigen Terminal (Farbunterstützung und Kontrollzeichen)
+gestartet. Diese werden bei den allermeisten Linux Distributionen
+(z.B. Ubuntu) direkt mitgeliefert. Alternativ funktioniert auch die
+IntelliJ-Konsole. \newline
+
+\textbf{Ausführung in Konsole}:
+
+Bei Vorliegen der JAR-Datei folgenden Befehl ausführen: \newline
+\texttt{/home/<User>/.jdks/openjdk-19.0.2/bin/java -jar ASE.jar} \newline
+
+\textbf{Ausführung in IntelliJ}:
+
+Im Projekt befindet sich unter \texttt{./src/main/java/plugins}
+die Klasse \textit{Main} mit der obligatorischen \textit{main()}-Methode.
+Diese Methode lässt sich mittels Knopfdruck ausführen. \newline
+
+\textbf{Anmerkung}:
+
+Um externe Abhängigkeiten zu minimieren, wurde auf eine
+Key-Input-Library verzichtet. Für die Interaktion benötigen wir
+allerdings spontane Tasteneingaben, welche nicht durch \textit{Enter}
+bestätigt werden. Die Lösung in Java ist daher, ein winziges Fenster
+mit Fokus zu öffnen. Auf diesem ist ein \textit{KeyListener} registriert,
+welcher die spontanen Tasteneingaben entgegennimmt und an das eigentliche
+Programm weiterleitet. Damit erhält man auch in der Konsole direkte
+Interaktivität.
+
+Der Nachteil ist allerdings, dass der Fokus auf dieses Fenster für einen
+normalen Benutzer nur schwierig wieder zu erlangen ist, sobald eine
+Maus-Interaktion außerhalb des Programmes getätigt wurde. Dann wird
+nämlich der Fokus durch das Betriebssystem vom Fenster genommen.
+
+Daher ist darauf zu achten, dass, sobald das Programm gestartet ist,
+lediglich Tasteneingaben erfolgen. Ansonsten muss das Programm
+neu gestartet werden, damit das Fenster wieder den Fokus hat. Die
+Applikation kann in der Konsole dennoch mittels der Tastenkombination
+\textit{Ctrl + C} mit einem Signal beendet werden.
+
+Im Übrigen sollte das Konsolen-Interface wie folgt aussehen. Sind
+unpassende Zeichen zu sehen oder fehlen Farben, dann ist das Terminal
+nicht im richtigen Modus oder unterstützt grundsätzlich nicht die
+Darstellung. Ein Unix-Terminal oder die IntelliJ-Konsole schaffen 
+dabei Abhilfe.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Bilder/Visualisierung/GameLook.png}
+    \caption{Konsolen-Interface}
+\end{figure}
 
 \section{Wie testet man die Applikation?}
