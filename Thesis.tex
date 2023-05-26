@@ -1,0 +1,120 @@
+% ------------------------------------------------------------
+% LaTeX Template für die DHBW zum Schnellstart!
+% Original: https://github.wdf.sap.corp/vtgermany/LaTeX-Template-DHBW
+% ------------------------------------------------------------
+% ---- Präambel mit Angaben zum Dokument
+\input{Inhalt/00_Latex/praeambel} 
+
+% ---- Elektronische Version oder Gedruckte Version?
+% ---- Unterschied: Die elektronische Version enthält keinen Platzhalter für die Unterschrift
+\usepackage{ifthen}
+\usepackage{algpseudocode}
+\usepackage{multirow}
+\usepackage{subcaption} 
+\usepackage{tikz}
+\usepackage{rotating}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{enumitem}
+\newboolean{e-Abgabe}
+\setboolean{e-Abgabe}{true}    % false=gedruckte Fassung
+
+% ---- Persönlichen Daten:
+\newcommand{\titel}{Advanced Software Engineering}
+\newcommand{\titelheader}{ASE}
+\newcommand{\arbeit}{Projektdokumentation}
+\newcommand{\studiengang}{Informatik (Computer Science)}
+\newcommand{\studienjahr}{2022}
+\newcommand{\autor}{Lukas Rapp and Simon Reichle}
+\newcommand{\autorReverse}{Rapp, Lukas}
+\newcommand{\verfassungsort}{Karlsruhe}
+\newcommand{\matrikelnr}{7602924, 7400045}
+\newcommand{\kurs}{TINF20B2}
+\newcommand{\bearbeitungsmonat}{Oktober 2022 - May 2023}
+\newcommand{\abgabe}{May 28th, 2023}
+\newcommand{\bearbeitungszeitraum}{04.10.2022 - 28.05.2023}
+\newcommand{\firmaName}{SAP SE}
+\newcommand{\firmaStrasse}{Dietmar-Hopp-Allee 16}
+\newcommand{\firmaPlz}{69190 Walldorf, Germany}
+% \newcommand{\betreuerFirma}{-}
+\newcommand{\betreuerDhbw}{Dr. Lars Briem}
+
+\input{Inhalt/00_Latex/kopfundFusszeile}
+
+% ---- Hilfreiches
+\newcommand{\zB}{z.\,B. }   % "z.B." mit kleinem Leeraum dazwischen (ohne wäre nicht korrekt)
+\newcommand{\dash}{d.\,h. }
+
+\newcommand{\code}[1]{\texttt{#1}} % Ist einfacher zu schreiben als ständig \texttt und erlaubt
+                                   % Änderungen im Nachhinein, wenn man z.B. Inline-Code anders stylen möchte.
+
+% ---- Silbentrennung (falls LaTeX defaults falsch / nicht gewünscht sind)
+\hyphenation{HANA}         % anstatt HA-NA
+\hyphenation{Graph-Script} % anstatt GraphS-cript
+
+% ---- Watermark/Wasserzeichen
+%\input{Inhalt/00_Latex/watermark} % Auskommentieren wenn nicht erwünscht
+%\watermark{gray}{\textbf{DRAFT}}     % Auskommentieren wenn nicht erwünscht. Nimmt optional die opacity/Deckraft z.B. \watermark[0.1]{green}{text} für 10% Deckkraft
+%\SetWatermarkSize{8} % Optional. Standard ist 5.8. 
+
+% ---- Beginn des Dokuments
+\begin{document}
+\setlength{\parindent}{0pt}              % Keine Paragraphen Einrückung.
+                                         % Dafür haben wir den Abstand zwischen den Paragraphen.
+\setcounter{secnumdepth}{2}              % Nummerierungstiefe fürs Inhaltsverzeichnis
+\setcounter{tocdepth}{1}                 % Tiefe des Inhaltsverzeichnisses. Ggf. so anpassen,
+                                         % dass das Verzeichnis auf eine Seite passt.
+%\sffamily                                % Serifenlose Schrift verwenden.
+
+% ---- Vorspann
+% ------ Titelseite
+\singlespacing
+\include{Inhalt/01_Standard/titelseite}  % Titelseite
+\newcounter{savepage}
+\pagenumbering{Roman}                    % Römische Seitenzahlen
+\onehalfspacing
+
+% ------ Erklärung, Sperrvermerk, Abstact
+% \include{Inhalt/01_Standard/sperrvermerk}
+%\include{Inhalt/01_Standard/erklaerung}
+%\include{Inhalt/02_Abstract/abstract-en}
+%\include{Inhalt/02_Abstract/abstract-de}
+
+% ------ Inhaltsverzeichnis
+\singlespacing
+\tableofcontents
+
+% ------ Verzeichnisse
+\renewcommand*{\chapterpagestyle}{plain}
+\pagestyle{plain}
+%\include{Inhalt/03_Verzeichnisse/abkuerzungen}
+\listoffigures                          % Erzeugen des Abbildungsverzeichnisses 
+%\listoftables                          % Erzeugen des Tabellenverzeichnisses
+%\renewcommand{\lstlistlistingname}{List of Code Listings}
+% \lstlistoflistings                      % Erzeugen des Listenverzeichnisses
+\setcounter{savepage}{\value{page}}
+
+% ---- Inhalt der Arbeit
+\cleardoublepage
+\pagenumbering{arabic}                  % Arabische Seitenzahlen für den Hauptteil
+\setlength{\parskip}{0.5\baselineskip}  % Abstand zwischen Absätzen
+\rmfamily
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\pagestyle{scrheadings}
+\onehalfspacing
+
+% ---- Literaturverzeichnis
+\cleardoublepage
+\renewcommand*{\chapterpagestyle}{plain}
+\pagestyle{plain}
+\pagenumbering{Roman}                   % Römische Seitenzahlen
+\setcounter{page}{\numexpr\value{savepage}+1}
+%\printbibliography[title=References]
+
+% ---- Anhang
+\appendix 
+\clearpage
+\pagenumbering{Roman}  % römische Seitenzahlen für Anhang
+
+\newpage
+\end{document}
