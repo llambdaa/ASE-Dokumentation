@@ -1,6 +1,37 @@
 \chapter{Clean Architecture}
 
 \section{Was ist Clean Architecture?}
+Die \textit{Clean Architecture} ist ein Gestaltungskonzept, das darauf
+abzielt möglichst robuste und wartbare Anwendungen zu entwickeln. Dabei
+wird eine Software in hierarchisch mehrere Schichten organisiert, was
+gemeinhin als \textit{Onion-Architektur} bekannt ist. Jede Schicht
+weist dabei eine spezifische Verantwortung (siehe \textit{domain}, 
+\textit{plugins} etc.). 
+
+Die Schichten sind über Schnittstellen verbunden. Hinter den
+Schnittstellen steckt dann eine tatsächliche Implementation. Ziel ist
+es dadurch eine Trennung zwischen der Logik einer Schicht und den
+technischen Details einer anliegenden Schicht zu erzeugen. Statt durch
+konkrete Implementierungsdetail sind die Schichten (zumindest von innen
+nach außen) über
+Funktionsabmachungen in Form der Schnittstellen verbunden. Dadurch
+lassen sich leicht Änderungen in einer Schicht vornehmen, ohne dabei
+zwangsläufig Änderungen in einer anderen Schicht vornehmen zu müssen.
+
+Entscheidend für das Prinzip ist die Abhängigkeitsrichtung. Äußere
+abstraktere Schichten (hierarchisch untergeordnet) können direkt auf
+innere Schichten zugreifen und von ihnen abhängig sein. Jedoch gilt
+dies nicht für die Umkehrrichtung. Aufrufe von innen nach außen werden
+über Schnittstellen und Abstraktionen sichergestellt 
+(\textit{Dependency Inversion} und \textit{Injection}).
+Tieferliegende Schichten sind zudem am wenigsten abstrakt und damit
+am langlebigsten.
+
+Dieser Sachverhalt führt zu Anwendungen, die wartbarer und robuster sind,
+weil Änderungen an einer Schicht meist keine Änderungen an anderen
+Schichten verursachen. Durch clevere Trennung und Abstraktionen lässt
+sich der Anpassungaufwand durch eine beliebige Änderung an vielen Stellen
+einsparen.
 
 \section{Analyse der Dependency Rule}
 
