@@ -1,6 +1,38 @@
 \chapter{Einführung}
 
 \section{Übersicht über die Applikation}
+Bei dieser Applikation handelt es sich um einen
+\textit{Single Player Dungeon Crawler}, der
+\textit{The Binding Of Isaac} in seinen Grundzügen nachempfunden ist.
+Der Spieler bewegt sich durch prozedural generierte Level. Dabei kann
+er verschiedene Gegenstände einsammeln wie Rüstung (\textit{Armor}),
+Waffen (\textit{Weapons}), Münzen (\textit{Coins}) und Herzen
+(\textit{Hearts}). Diese Gegenstände sollen ihm dabei helfen zu
+überleben. Die Münzen stellen jedoch den Punktestand dar.
+Während der Spieler sich durch die Räume bewegt, stößt er
+auf eine Palette unterschiedlicher Gegner (\textit{Spider}, 
+\textit{Skeleton}, {Zombie}, \textit{Ogre}). Diese besitzen auch
+unterschiedliche Fähigkeiten und versuchen den Spieler anzugreifen.
+Betritt der Spieler einen Raum, so wird dieser gesperrt, bis er alle
+darin befindlichen Gegner besiegt hat. Erst dann öffnen sich die Türen
+wieder und der Spieler kann in anliegende Räume laufen.
+Stirbt der Spieler dabei, so ist das Spiel zu Ende. Bleibt er am Leben,
+hangelt er sich von Level zu Level. Am Ende eines jeden Levels steht
+ein Raum mit einer einzigen Falltür in der Mitte, welche den Spieler
+in das nächste Level bringt.
+
+Das Spiel ist rundenbasiert. In jeder Runde stehen Aktionen zur 
+Verfügung, wie etwa Angreifen (\textit{Space}), Bewegen
+(\textit{W}, \textit{A}, \textit{S} oder \textit{D}) oder Aufheben
+(\textit{E}). Auch die Gegner agieren rundenbasiert. Diese können
+jedoch lediglich angreifen. Sie laufen dem Spieler mit einer Runde
+Zeitversatz hinterher. Dabei können Gegner sich auch gegenseitig den
+Weg blockieren.
+
+Damit der Spielstand in Form von Level, Gegnern und Items nachvollziehbar
+bleibt, gibt es eine einfache Anzeige, welche mithilfe von ANSI- und
+ASCII-Zeichen den Spielinhalt darstellt. Dabei helfen unterschiedliche
+Symbole und Farben den Inhalt zu verstehen.
 
 \section{Wie startet man die Applikation?}
 
