@@ -62,6 +62,73 @@ Zum Schluss gibt JUnit eine Zusammenfassung aus. Diese beschreibt die
 erfolgreichen und fehlgeschlagenen Tests.
 
 \section{ATRIP: Thorough}
+\subsection*{Positiv-Beispiel}
+Der nachfolgende Code-Ausschnitt zeigt das Positiv-Beispiel zum
+\textit{Thorough}-Aspekt. Hierbei wird die
+\textit{getClockwiseAngleFromTest()}-Funktion der Klasse
+\textit{Vector} getestet, welche den Winkel im Uhrzeigersinn 
+zwischen zwei Vektoren berechnet. Dabei gibt es einige verschiedene
+Möglichkeiten. Diese hängen unter anderem von der Definitionsreihenfolge
+der beiden involvierten Vektoren ab. Dabei beginnt die Winkelmessung
+beim zweiten angegebenen Vektor und läuft bis zum ersten Vektor im
+Uhrzeigersinn. Es gibt zudem auch Fälle, in denen die Berechnung
+fehlschlägt, etwa dann wenn ein Vektor der Nullvektor ist.
+
+Der Test ist \textit{Thorough}, da er als \textit{ParameterizedTest}
+umgesetzt ist und die Eingabe-Quelle \textit{getClockwiseAngleFromArguments()}
+eine gründliche Stichprobe möglicher Fälle bereitstellt. Dabei werden
+etwa Standardfälle in einigen Ausführungen und Definitionsreihenfolgen
+ausprobiert, sowie unübliche Fälle, Edge Cases und pathologische Fälle.
+
+\lstset{ 
+    language=Java,
+    basicstyle=\fontfamily{pcr}\selectfont\footnotesize,
+    keywordstyle=\color{purple},
+    numberstyle=\tiny,    
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false, 
+    frame=single,
+    tabsize=2,
+    rulesepcolor=\color{gray},
+    rulecolor=\color{black},
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false, 
+}
+
+\vspace{1cm}
+\begin{lstlisting}[caption={ATRIP: Thorough / Positiv}]
+    @ParameterizedTest
+    @MethodSource("getClockwiseAngleFromArguments")
+    void getClockwiseAngleFromTest(Vector to, Vector from, double angle) {
+        assertEquals(angle, to.getClockwiseAngleFrom(from));
+    }
+    
+    private static List<Arguments> getClockwiseAngleFromArguments() {
+        return List.of(
+                Arguments.of(Vector.UP, Vector.UP, 0D),
+                Arguments.of(Vector.RIGHT, Vector.UP, 90D),
+                Arguments.of(Vector.UP, Vector.RIGHT, 270D),
+                Arguments.of(Vector.LEFT, Vector.UP, 270D),
+                Arguments.of(Vector.UP, Vector.LEFT, 90D),
+                Arguments.of(Vector.DOWN, Vector.UP, 180D),
+                Arguments.of(Vector.UP, Vector.DOWN, 180D),
+                
+                Arguments.of(new Vector(1, 2), new Vector(1, 2), 0D),
+                Arguments.of(new Vector(1, 1), new Vector(1, -1), 90D),
+                Arguments.of(new Vector(-1, 1), new Vector(1, -1), 180D),
+                
+                Arguments.of(new Vector(1, 1), Vector.RIGHT, 45D),
+                Arguments.of(new Vector(10000, 0), Vector.UP, 90D),
+                
+                Arguments.of(new Vector(0, 0), Vector.UP, Double.NEGATIVE_INFINITY),
+                Arguments.of(new Vector(0, 0), Vector.RIGHT, Double.NEGATIVE_INFINITY)
+        );
+    }
+\end{lstlisting}
+
+\subsection*{Negativ-Beispiel}
 
 \section{ATRIP: Professional}
 
