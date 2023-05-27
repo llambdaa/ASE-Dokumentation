@@ -15,7 +15,7 @@
       \hline
       3. VectorTest\#getClockwiseAngleFromTest & Testet \textit{getClockwiseAngleFrom}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Winkel zwischen zwei Vektoren berechnet \\
       \hline
-      4. NumericTest\#clampTest & Testet \textit{clamp}-Funktion der Klasse \textit{Numeric} darauf, ob sie korrekt Werte in einem gegebenen Interval einschließt \\
+      4. NumericTest\#clampTest & Testet \textit{clamp}-Funktion der Klasse \textit{Numeric} darauf, ob sie korrekt Werte in einem gegebenen Intervall einschließt \\
       \hline
       5. EntityTest\#getPreferredMovement DirectionTest & Testet \textit{getPreferredMovementDirection}-Funktion der Klasse \textit{Enemy} darauf, ob sie korrekt eine Bewegung aufgrund der Position des Spielers wählt \\
       \hline
@@ -97,7 +97,7 @@ ausprobiert, sowie unübliche Fälle, Edge Cases und pathologische Fälle.
     breakatwhitespace=false, 
 }
 
-\vspace{1cm}
+\vspace{0.5cm}
 \begin{lstlisting}[caption={ATRIP: Thorough / Positiv}]
     @ParameterizedTest
     @MethodSource("getClockwiseAngleFromArguments")
@@ -129,6 +129,24 @@ ausprobiert, sowie unübliche Fälle, Edge Cases und pathologische Fälle.
 \end{lstlisting}
 
 \subsection*{Negativ-Beispiel}
+Der nachfolgende Code-Ausschnitt zeigt das Negativ-Beispiel zum
+\textit{Thorough}-Aspekt. Hierbei wird die
+\textit{clamp()}-Funktion der Klasse
+\textit{Numeric} getestet, welche einen Wert in einem gegebenen
+Intervall einschließt. Der Wert liegt entweder im Intervall oder
+nimmt den Wert der jeweilig überschrittenen Intervallgrenze an.
+
+Der Test ist nicht \textit{Thorough}, da er nur einen einzigen Fall
+prüft. Dieser ist zudem trivial. Der Test hat keine Aussagekraft über
+die Robustheit der \textit{clamp()}-Funktion.
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={ATRIP: Thorough / Negativ}]
+    @Test
+    void clampTest() {
+        assertEquals(5, Numeric.clamp(0, 10, 5));
+    }
+\end{lstlisting}
 
 \section{ATRIP: Professional}
 
