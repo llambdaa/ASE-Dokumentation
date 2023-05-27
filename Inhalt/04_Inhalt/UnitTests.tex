@@ -149,6 +149,66 @@ die Robustheit der \textit{clamp()}-Funktion.
 \end{lstlisting}
 
 \section{ATRIP: Professional}
+\subsection*{Positiv-Beispiel}
+
+
+\subsection*{Negativ-Beispiel}
+Der nachfolgende Code-Ausschnitt zeigt das Negativ-Beispiel zum
+\textit{Professional}-Aspekt. Hierbei wird die
+\textit{dot()}-Funktion der Klasse
+\textit{Vector} getestet, welche das Skalarprodukt zwischen zwei
+Vektoren berechnet.
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={ATRIP: Thorough / Negativ}]
+    @Test
+    void dotTest() {
+        Vector posA = new Vector(1, 2);
+        Vector posB = new Vector(3, 4);
+        Vector negC = new Vector(-1, -2);
+        Vector negD = new Vector(-3, -4);
+        double dot = posA.dot(posB);
+        
+        assertEquals(5D, posA.dot(new Vector(1, 2)));
+        assertEquals(dot, posA.dot(posB));
+        
+        Vector e = new Vector(-1, -2);
+        assertEquals(11, e.dot(negD));
+        
+        // [Edge Cases]
+        Vector zero = new Vector(0, 0);
+        assertEquals(0, posA.dot(zero));
+        assertEquals(0, posB.dot(zero));
+        assertEquals(0, negD.dot(zero));
+    }
+\end{lstlisting}
+
+Sie ist aus folgenden Gründen nicht professionell:
+\begin{enumerate}
+    \item Alle Test-Fälle sind in der \textit{dotTest()}-Methode
+    beschrieben. Das erschwert zum einen die Wartung, zum anderen ist
+    dadurch schlecht zu erkennen, an welcher Stelle genau ein Test
+    fehlgeschlagen ist. Die Beispiele sollten daher stattdessen über
+    einen \textit{ParameterizedTest} umgesetzt werden.
+    \item Die Instruktionsblöcke greifen teilweise ineinander. 
+    Beispielsweise wird im ersten Block eine Variable benutzt, welche
+    in den folgenden Blöcken genutzt wird, obwohl die Aufteilung eine
+    logische Trennung suggeriert. Dadurch wird der Code
+    unübersichtlicher.
+    \item Die Variablenbenennung ist nicht konsequent. Anfangs werden
+    Vektoren bezüglich ihrer Ausrichtung benannt, letztlich nicht mehr.
+    \item Es existiert Code-Duplikation. Einmal wird
+    \textit{posA.dot(posB)} in die Variable \textit{dot} geschrieben,
+    danach in einem Test aber nochmals komplett ausgeschrieben. Das 
+    führt zu Unübersichtlichkeit. Vermutlich hat das auch zur Prüfung,
+    ob \textit{dot} sich selbst entspricht, geführt - ein trivialer
+    Fall, welcher dem Test keine Aussagekraft liefert.
+    \item Zudem sind Randfälle (siehe unten) mehrfach behandelt,
+    obwohl die entsprechenden Stichproben logisch keinen Unterschied
+    aufweisen sollten. Das spricht entweder für fehlendes Wissen oder
+    Nachlässigkeit. Letztlich bringen die überflüssigen Assertions
+    dem Test keine zusätzliche Aussagekraft. 
+\end{enumerate}
 
 \section{Code Coverage}
 
