@@ -2,7 +2,64 @@
 
 \section{10 Unit Tests}
 
+\hyphenation{DirectionTest}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+      \hline
+      \textbf{Unit Test} & \textbf{Beschreibung} \\
+      \hline
+      1. VectorTest\#dotTest & Testet \textit{dotTest}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Skalarprodukte berechnet \\
+      \hline
+      2. VectorTest\#lengthTest & Testet \textit{length}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Vektorlängen berechnet \\
+      \hline
+      3. VectorTest\#getClockwiseAngleFromTest & Testet \textit{getClockwiseAngleFrom}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Winkel zwischen zwei Vektoren berechnet \\
+      \hline
+      4. NumericTest\#clampTest & Testet \textit{clamp}-Funktion der Klasse \textit{Numeric} darauf, ob sie korrekt Werte in einem gegebenen Interval einschließt \\
+      \hline
+      5. EntityTest\#getPreferredMovement DirectionTest & Testet \textit{getPreferredMovementDirection}-Funktion der Klasse \textit{Enemy} darauf, ob sie korrekt eine Bewegung aufgrund der Position des Spielers wählt \\
+      \hline
+      6. RoomGridTest\#fitsTest & Testet \textit{fits}-Funktion der Klasse \textit{RoomGrid} darauf, ob sie korrekt feststellen kann, ob ein Raum noch auf die Spielkarte passt \\
+      \hline
+      7. RoomPositionTest\#getMaxDistanceAlongAnyAxisTest & Testet \textit{getMaxDistanceAlongAnyAxis}-Funktion der Klasse \textit{RoomPosition} darauf, ob sie korrekt die maximale Entfernung entlang einer von beiden Axen von einem Punkt zum anderen berechnen kann \\
+      \hline
+      8. CollectionSelectorTest\#randomSubset Test & Testet \textit{random}-Funktion der Klasse \textit{CollectionSelector} darauf, ob sie korrekt Teilmengen der Auswahl selektiert \\
+      \hline
+    \end{tabular}
+    \caption{Unit Tests mit Beschreibung I}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+      \hline
+      \textbf{Unit Test} & \textbf{Beschreibung} \\
+      \hline
+      9. GameStateTest\#movementTest & Testet \textit{dotTest}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Skalarprodukte berechnet \\
+      \hline
+      10. VectorTest\#lengthTest & Testet \textit{length}-Funktion der Klasse \textit{Vector} darauf, ob sie korrekt Vektorlängen berechnet \\
+      \hline
+    \end{tabular}
+    \caption{Unit Tests mit Beschreibung II}
+\end{table}
+
 \section{ATRIP: Automatic}
+Der Begriff \textit{Automatic} bezieht sich auf die automatische
+Ausführung von Unit Tests. Dies kann mit herkömmlichen Test-Frameworks
+wie etwa \textit{JUnit5} erreicht werden. 
+
+Dabei können Methoden eigens zum Testen erstellt werden, welche mit
+\textit{@Test} annotiert werden. Innerhalb der IDE (z.B. IntelliJ)
+können sie dann über einen Befehl oder Knopfdruck einzeln oder im
+Gesamten ausgeführt werden.
+
+Die Tests sind so konzipiert, dass sie nicht andere Durchläufe beeinflussen.
+Sie sind also unabhängig von einander (\textit{Independence}) und 
+wiederholbar (\textit{Repeatability}). Das führt zu nachvollziehbaren
+Ergebnissen. Zudem besitzen die Tests keine externen Abhängigkeiten.
+
+Zum Schluss gibt JUnit eine Zusammenfassung aus. Diese beschreibt die
+erfolgreichen und fehlgeschlagenen Tests.
 
 \section{ATRIP: Thorough}
 
