@@ -60,6 +60,7 @@ Ergebnissen. Zudem besitzen die Tests keine externen Abhängigkeiten.
 
 Zum Schluss gibt JUnit eine Zusammenfassung aus. Diese beschreibt die
 erfolgreichen und fehlgeschlagenen Tests.
+\pagebreak
 
 \section{ATRIP: Thorough}
 \subsection*{Positiv-Beispiel}
@@ -150,7 +151,70 @@ die Robustheit der \textit{clamp()}-Funktion.
 
 \section{ATRIP: Professional}
 \subsection*{Positiv-Beispiel}
+Der nachfolgende Code-Ausschnitt zeigt das Positiv-Beispiel zum
+\textit{Professional}-Aspekt. Hierbei wird die
+\textit{random()}-Funktion der Klasse
+\textit{CollectionSelector} getestet, welche aus einer vorgegebenen
+Collection versucht \textit{amount} Elemente zufällig zu wählen.
+Dabei sind die gewählten Elemente unterschiedlich. Hat die Collection
+zu wenige Elemente, so wird die komplette Collection zurückgegeben. 
 
+\vspace{0.5cm}
+\begin{lstlisting}[caption={ATRIP: Professional / Positiv}]
+    private static final Random CONTROLLED_RANDOMNESS = new Random(69420);
+    private static final List<Integer> COLLECTION = Arrays.asList(1, 2, 3, 4, 5);
+    
+    @ParameterizedTest
+    @MethodSource("randomSubsetArguments")
+    void randomSubsetTest(CollectionSelector<Integer> selector, int amount, int expectedSubsetSize) {
+        Set<Integer> selection = new HashSet<>(selector.random(amount).get());
+        assertEquals(expectedSubsetSize, selection.size());
+        assertTrue(selector.get().containsAll(selection));
+    }
+    
+    private static List<Arguments> randomSubsetArguments() {
+        return List.of(
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), -1, 0),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 0, 0),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 1, 1),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 2, 2),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 3, 3),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 4, 4),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 5, 5),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 6, 5),
+                Arguments.of(new CollectionSelector<>(COLLECTION, CONTROLLED_RANDOMNESS), 10000, 5)
+        );
+    }
+\end{lstlisting}
+
+Sie ist aus folgenden Gründen professionell:
+\begin{enumerate}
+    \item Es existieren keine Code-Duplikationen im Test selbst.
+    Alle Fälle sind in einer Eingabe-Quelle namens
+    \textit{randomSubsetArguments} zusammengefasst. Dadurch kann
+    nachvollzogen werden, an welchen Stellen der Test fehlschlägt.
+    Zudem ist die Logik sehr viel einfacher zu erkennen und
+    nachzuvollziehen.
+    \item Durch den \textit{ParameterizedTest} ist zudem einfacher zu
+    erkennen, ob alle wichtigen Fälle abgedeckt sind und die Funktion
+    gründlich untersucht wurde.
+    \item Durch fehlende Duplikation kann die Test-Funktion sich auf
+    die grundlegende Mechanik beschränken. Variablennamen bleiben
+    dadurch verständlich, weil keine Alternativnamen für Objekte
+    gleicher Art gefunden werden müssen.
+    \item Kurze aber effektive Tests vermindern das Risiko für
+    \textit{Code Smells} oder Fehler im Code, wodurch die Robustheit
+    und Wartbarkeit des Tests steigt.
+    \item Es wird eine nicht-triviale Kernfunktion der Domäne getestet.
+    Der Test sorgt damit für eine sinnvolle Erhöhung der Coverage und
+    stellt sicher, dass wichtige Bestandteile für das Funktionieren
+    der Gesamtanwendung selbst funktional sind.
+    \item Der \textit{ParameterizedTest} erfüllt die Eigenschaft
+    \textit{Thorough}.
+    \item Die zu prüfende Funktion benötigt \textit{Randomness}. Für
+    nachvollziehbare Ergebnisse wird der entsprechende Generator mit
+    einem Seed festgesetzt.
+\end{enumerate}
 
 \subsection*{Negativ-Beispiel}
 Der nachfolgende Code-Ausschnitt zeigt das Negativ-Beispiel zum
@@ -160,7 +224,7 @@ Der nachfolgende Code-Ausschnitt zeigt das Negativ-Beispiel zum
 Vektoren berechnet.
 
 \vspace{0.5cm}
-\begin{lstlisting}[caption={ATRIP: Thorough / Negativ}]
+\begin{lstlisting}[caption={ATRIP: Professional / Negativ}]
     @Test
     void dotTest() {
         Vector posA = new Vector(1, 2);
