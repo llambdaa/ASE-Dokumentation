@@ -5,7 +5,7 @@
 \hyphenation{DirectionTest}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|p{8cm}|p{8cm}|}
+    \begin{tabular}{|p{7cm}|p{7cm}|}
       \hline
       \textbf{Unit Test} & \textbf{Beschreibung} \\
       \hline
@@ -31,7 +31,7 @@
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|p{8cm}|p{8cm}|}
+    \begin{tabular}{|p{7cm}|p{7cm}|}
       \hline
       \textbf{Unit Test} & \textbf{Beschreibung} \\
       \hline
@@ -276,4 +276,92 @@ Sie ist aus folgenden Gründen nicht professionell:
 
 \section{Code Coverage}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+        \hline
+        \textbf{Class} & \textbf{Method} & \textbf{Line} \\
+        \hline
+        41.8\% (28/67) & 29.1\% (118/405) & 29.2\% (317/1084) \\
+        \hline
+    \end{tabular}
+    \caption{Overall Coverage Summary}
+\end{table}
+
+Die Tabelle zeigt die Code-Coverage aller Tests über das gesamte
+Projekt, aufgeschlüsselt nach Klassen, Methoden und Zeilen. Die
+dargestellten Werte zeichnen eine schlechte Coverage ab. Um diese zu
+erhöhen, muss noch viel Arbeit investiert werden. Bisher hat sich
+die Arbeit aber hauptsächlich auf die Logik und die Design-Prinzipien
+beschränkt. Über die geforderten Unit Tests ist bis dato nicht viel
+passiert. Dabei ist eine hohe Coverage (häufig > 90\%) das Ziel. Sie
+verspricht, dass durch entsprechende Tests schnell Bugs und neue
+Fehler identifiziert werden. Zudem untermauert eine sehr gute Coverage
+bei gleichzeitig sehr guter Test-Qualität entsprechend auch die hohe
+Qualität des Produktes.
+
+In diesem Fall gibt es einzelne Bereiche, die recht gute Coverage
+erhalten haben. Dazu zählen die \textit{abstraction} Schicht, sowie
+einige Teile in der \textit{domain} und der \textit{application}
+Schicht. Aber auch hier gibt es merklich Lücken. Die \textit{plugin}
+Schicht fällt der Gesamt-Coverage jedoch besonders schwer in's
+Gewicht. Hier sind lediglich die Controls und die Persistenz mäßig
+abgedeckt. Dabei existieren in dieser Schicht allerdings noch viele
+Klassen und Funktionen, welche sich mit der Anzeige des Spiels in
+der Konsole beschäftigen. Diese haben gar keine Coverage abbekommen.
+
 \section{Fakes und Mocks}
+\subsection{GameRepositoryFake}
+Die nachfolgende Abbildung zeigt das UML-Diagramm des Fakes
+\textit{GameRepositoryFake}. Er ist realisiert als eine weitere
+Implementation des \textit{IGameRepository}-Interfaces. Dieses wird
+von der Klasse \textit{Game} genutzt, um über eine Schnittstelle mit
+einer Persistenz zu interagieren. Dabei können prinzipiell unerwünschte
+Fehler auftreten, vor allem bei der Interaktion mit einem Dateisystem.
+Diese müssen zwangsläufig behandelt werden, um ein sicheres Programm
+zu gewährleisten. 
+
+Es ist allerdings nicht zwangsläufig einfach gezielt Fehlermeldungen
+zu erzeugen, um die Abdeckung der Fehlerbehandlung festzustellen. 
+Daher wird auch einen Fake zurückgegriffen, welcher entsprechend
+seiner Konfiguration Fehlermeldungen erzeugt und so eine fehlerhafte
+Interaktion, z.B. mit einem Dateisystem simuliert.
+
+So wurden beispielsweise die \textit{load()}- und \textit{save()}-
+Funktion ausgewählt, um gefaked zu werden. Dafür gibt man entsprechend
+im Test an, ob jeweilig \textit{load()} und \textit{save()} 
+fehlschlagen sollen, um die Robustheit der Benutzung sicherzustellen.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/GameRepositoryFake_structure.png}
+    \caption{KeyInputHandlerFake}
+\end{figure}
+
+\subsection{KeyInputHandlerFake}
+
+Die nachfolgende Abbildung zeigt das UML-Diagramm des Fakes
+\textit{KeyInputHandlerFake}. Er ist realisiert als eine weitere
+Implementation des \textit{IInteractionHandler}-Interfaces. Dieses wird
+von der Klasse \textit{Game} genutzt, um über eine Schnittstelle
+beliebige Aktionen entgegenzunehmen und zu verarbeiten. Um die
+korrekte Verarbeitung der Aktionen sicherzustellen, wird der
+Spielzustand nach einer Aktionssequenz geprüft. Dies passiert
+konkret im Test \textit{GameStateTest\#movementTest}, indem die
+Auswirkung von verschiedenen Aktionen auf die Bewegung und Position
+des Spielers geprüft werden.
+
+Im Normalbetrieb werden die Aktionen durch den KeyInputHandler als
+Reaktion auf Tasteneingaben erzeugt. Dies ist jedoch beim Testen nicht
+möglich. Der \textit{KeyInputHandlerFake} wird daher benötigt, um reale
+Tasteneingaben zu simulieren und Änderungen im Spielzustand
+hervorzurufen. Dafür wird für jeden Testlauf eine feste
+Aktionssequenz definiert.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/KeyInputHandlerFake_structure.png}
+    \caption{KeyInputHandlerFake}
+\end{figure}
