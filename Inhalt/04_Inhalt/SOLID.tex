@@ -54,5 +54,52 @@ benutzt werden.
 \end{figure}
 
 \subsection{Negativ-Beispiel}
+Die nachfolgende Abbildung zeigt das UML-Diagramm der Klasse
+\textit{KeyInputHandler}. Dieses ist in der Schicht \textit{plugins}
+angesiedelt. Es hält eine \textit{Registry} inne, in welcher zu einigen
+Tasteneingaben entsprechende Aktionen (siehe \textit{IAction}) 
+hinterlegt sind. Anhand der Einträge wird dann bei einer Eingabe die
+korrekte Aktion gesucht, auf eine \textit{Queue} gelegt und später im
+\textit{Game Loop} ausgeführt. Die Eintragungen erfolgen im
+\textit{Static Initialization Block} der Klasse. Das bedeutet, dass
+die Klasse editiert werden muss, wenn neue Aktionen in das Spiel
+aufgenommen und mit Tasten belegt werden. Dies widerspricht dem 
+\textit{Open-Closed-Principle}.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Bilder/Visualisierung/KeyInputHandlerOCPViolation_structure.png}
+    \caption{Analyse Open-Closed-Principle: Negativ}
+\end{figure}
 
 \section{Analyse Dependency-Inversion-Principle (DIP)}
+\subsection{Positiv-Beispiel}
+Die nachfolgende Abbildung zeigt das UML-Diagramm der Klasse
+\textit{IGameRepository}. Dieses ist in der Schicht \textit{plugins}
+angesiedelt. Wie an den Pfeilen zu sehen ist, arbeiten die Schichten
+\textit{application} und \textit{plugins} über das Interface
+namens \textit{IGameRepository} als Vermittler miteinander. Beide
+Pfeile laufen auf das Interface zu. 
+
+Das \textit{Dependency-Inversion-Principle} ist erfüllt, da eine
+gemeinsame abstrakte Abmachung zwischen den Schichten besteht. Die
+Klasse \textit{Game} hat keine Abhängigkeit zur Funktionalität der
+Klasse \textit{FileGameRepository}, lediglich zu einer Abstraktion,
+mit welcher Funktionalität versichert wird. Stattdessen ist die
+Abhängigkeit umgekehrt (\textit{Dependency Inversion}). Die Klasse
+\textit{FileGameRepository} hat eine Abhängigkeit nach innen, nämlich
+zum Interface \textit{IGameRepository}. Somit lassen sich leicht
+Änderungen am \textit{FileGameRepository} vornehmen oder dieser gar
+durch eine ganz andere Persistenz-Methode ausgetauscht werden, ohne
+dass die Klasse \textit{Game} davon direkt betroffen ist.
+
+\enlargethispage*{2\baselineskip}
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{Bilder/Visualisierung/IGameRepository_structure.png}
+    \caption{Analyse Dependency-Inversion-Principle: Positiv}
+\end{figure}
+
+\subsection{Negativ-Beispiel}
