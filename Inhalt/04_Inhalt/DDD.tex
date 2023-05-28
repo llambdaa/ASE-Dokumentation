@@ -73,6 +73,27 @@ die herausstellenden Merkmale klar abzugrenzen.
 \section{Entities}
 
 \section{Value Objects}
+Die nachfolgende Abbildung zeigt das UML-Diagram zur Klasse
+\textit{Position}, welche ein \textit{Value Object} darstellt.
+Instanzen dieser Klasse sind \textit{immutable}. Die Felder sind
+\textit{final} und es existieren lediglich die Getter \textit{x()}
+und \textit{y()}. Damit lässt sich ein Objekt dieser Klasse einmalig
+mit Positions-Werten initialisieren. 
+
+Der Vorteil ist, dass Positionen - welche einen wichtigen Bestandteil
+der Domänenlogik darstellen - nicht einfach geändert werden können.
+Es muss bewusst eine Ersetzung vorgenommen werden. Es entstehen somit
+keine unerwarteten Seiteneffekte.
+
+Die Gleichheit zweiter Instanzen wird über die überschriebenen
+\textit{equals()}- und \textit{hashCode()}-Funktionen festgestellt.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Bilder/Visualisierung/Position_structure.png}
+    \caption{Value Object \textit{Position}}
+\end{figure}
 
 \section{Repositories}
 
