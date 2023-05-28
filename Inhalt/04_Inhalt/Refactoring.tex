@@ -1,8 +1,66 @@
 \chapter{Refactoring}
 
 \section{Code Smells}
+\subsection*{Code Comments}
+Der erste Code zeigt den Zustand vor dem Refactoring der Klasse 
+\textit{LevelGenerator}, mittlerweile \textit{IsaacLevelGenerator}
+genannt (Commit 13d1315). Es fallen sofort die ausführlichen Kommentare
+auf. Diese stellen einen \textit{Code Smell} dar, weil sie versuchen
+eine Erklärung zu liefern für Code, welcher scheinbar selbst nicht
+aussagekräftig genug ist.
 
-\subsection*{}
+Dabei war besonders verwirrend, was mit \textit{virtual} gemeint ist.
+Folglich wurden die Kommentare, wie im zweiten Snippet zu sehen,
+entfernt und die Funktionen entsprechend umbenannt, sodass anhand
+der Namen ersichtlich ist, dass es sich hierbei um einen mehrschrittigen
+Generierungsprozess handelt, bei dem zunächst Prototypen des Levels
+generiert werden (Commit a149b1c). Die Intention ist nun trotz
+Kommentare gut verständlich.
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Code Smell: Code Comments (Vorher)}]
+    public static Level generate(Game game, int number) {
+        // The generator makes a virtual floor plan based upon an abstract grid.
+        // On this grid, small rooms are placed and connected to their direct
+        // neighbors.
+        VirtualCellFloorPlan cellPlan = LevelGenerator.generateVirtualFloorPlan();
+        
+        // The small rooms are then aggregated to bigger rooms. However, the spawn
+        // and boss room are excluded from that operation. Exits of former small
+        // rooms (now sections of bigger rooms) are preserved if they point into
+        // another room. Otherwise, they are discarded. The abstraction is still
+        // based on the grid.
+        VirtualAggregateFloorPlan aggregatePlan = LevelGenerator.aggregate(cellPlan);
+        
+        // Based on the virtual floor plan actual rooms are generated. They are
+        // then connected by the virtual exits that are left. This effectively
+        // spans up a graph traversable by the player. Furthermore, each door
+        // is detached from a grid position and is placed at real room coordinates.
+        MaterializedFloorPlan materializedPlan = LevelGenerator.materialize(aggregatePlan, game.getPlayer());
+        
+        // Lastly, the materialized rooms are populated by items and enemies.
+        // The rarity of former and the strength of latter is determined by the
+        // current floor level.
+        LevelGenerator.populate(materializedPlan.getRooms());
+        return new Level(number, game.getPlayer(), materializedPlan.getSpawnRoom());
+    }
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Code Smell: Code Comments (Nachher)}]
+    public Level next() {
+        PrototypicBasicFloorPlan basicFloorPlan = generatePrototypicBasicFloorPlan();
+        PrototypicAggregatedFloorPlan aggregatedFloorPlan = aggregate(basicFloorPlan);
+        MaterializedFloorPlan materializedFloorPlan = this.materialize(aggregatedFloorPlan);
+        
+        LevelGenerator.populate(materializedFloorPlan.getRooms());
+        Level result = new Level(this.stage, game.getPlayer(), materializedFloorPlan.getSpawnRoom());
+        this.stage++;
+        return result;
+    }
+\end{lstlisting}
+
+\subsection*{Large Class}
 \vspace{0.5cm}
 \begin{lstlisting}[caption={Code Smell I (Vorher)}]
     @Override
