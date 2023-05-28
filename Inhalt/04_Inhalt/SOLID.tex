@@ -20,6 +20,44 @@ gezogen und die nötigen Funktionen aufgerufen werden können.
 \end{figure}
 
 \subsection{Negativ-Beispiel}
+Die nachfolgenden Abbildungen zeichen ein Negativ-Beispiel und die
+entsprechende Lösung für das \textit{Single-Responsibility-Principle} (SRP).
+Dieses besagt, dass eine Klasse oder ein Modul nur eine einzige
+Aufgabe haben und es demnach auch nur einen Grund für eine Änderung
+geben sollte.
+
+Der \textit{KeyInputHandler} vereint bisher allerdings zwei
+Hauptaufgaben in einer Klasse und verletzt damit das
+\textit{Single-Responsibility-Principle}. Zum einen kümmert sich die
+Klasse um die Verarbeitung von Tasteneingaben und die Umwandlung in
+entsprechende \textit{IAction}-Objekte, welche vom \textit{Game Loop}
+abgearbeitet werden können. Zum anderen findet in ihm die Registrierung
+der Tastenbelegung statt. 
+
+Das bedeutet, dass sowohl bei einer Änderung der Verarbeitungsmechanik,
+als auch bei einer Änderung der Tastenbelegungen - beides sind wohlgemerkt
+unterschiedliche Sachverhalte - die Klasse \textit{KeyInputHandler}
+editiert werden muss. Das verstößt gegen jenes Prinzip.
+
+Eine mögliche Lösung ist, die Tastenbelegungen in eine separate
+Klasse namens \textit{KeyRegistry} zu verschieben und von dort aus
+statisch zugänglich zu machen. Die Verarbeitungslogik bleibt in
+\textit{KeyInputHandler} bestehen. Die Trennung gibt beiden Klassen
+nun genau eine Aufgabe, wodurch das SRP wieder eingehalten ist.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Bilder/Visualisierung/KeyInputHandler_structureSRPViolation.png}
+    \caption{Analyse Single-Responsibility-Principle: Negativ}
+\end{figure}
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/KeyInputHandlerWithRegistry_structure.png}
+    \caption{Analyse Single-Responsibility-Principle: Lösung}
+\end{figure}
 
 \section{Analyse Open-Closed-Principle (OCP)}
 \subsection{Positiv-Beispiel}
