@@ -71,6 +71,39 @@ Definition der Spielfigur unerlässlich für die Entwicklung selbst, um
 die herausstellenden Merkmale klar abzugrenzen.
 
 \section{Entities}
+Die nachfolgende Abbildung zeigt das UML-Diagramm zur Klasse
+\textit{GameState}, welche eine \textit{Entity} darstellt. Sie wird
+genutzt, um den Spielzustand zu repräsentieren und zu persistieren.
+Alle relevanten Objekte sind ihm untergeordnet. 
+
+Zudem bietet \textit{GameState} kaum eigenes Verhalten, was ein
+starkes Indiz dafür ist, dass es sich um eine \textit{Entity} handelt.
+Es wird von \textit{Game} instruiert neue Level vom Generator
+generieren zu lassen und somit den Zustandsbestand auszutauschen, da
+unter dem aktuellen Level wiederum alle Informationen der derzeitigen
+Spielstufe zusammengefasst sind.
+
+Zum Zwecke einer eindeutigen Unterscheidung zwischen Spielständen
+erhält jeder \textit{GameState} eine UUID als Surrogatschlüssel.
+Die \textit{equals()}- und \textit{hashCode()}-Funktionen wurden auf
+die UUID ausgerichtet, damit Vergleiche über eine Identifikation
+statt auf Attributbasis stattfinden. Auch dies ist wieder ein Indiz
+für eine \textit{Entity}. Jedoch ist \textit{GameState} nicht als Teil der
+Domäne implementiert, was der Definition einer \textit{Entity}
+widerspricht. Es bietet sich an dieser Stelle allerdings an, die
+Definition aufzuweichen.
+
+Zuletzt hat der \textit{GameState} einen Lebenszyklus. Er beginnt mit
+dem Spielstart. Während des Spielverlaufs ändert sich der Zustand
+stetig. Er endet wiederum mit der Beendigung des Spiels, wenn der
+Spieler besiegt wird.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/GameState_structure.png}
+    \caption{Entities \textit{GameState}}
+\end{figure}
 
 \section{Value Objects}
 Die nachfolgende Abbildung zeigt das UML-Diagramm zur Klasse
@@ -91,7 +124,7 @@ Die Gleichheit zweiter Instanzen wird über die überschriebenen
 \vspace{0.5cm}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{Bilder/Visualisierung/Position_structure.png}
+    \includegraphics[width=0.8\linewidth]{Bilder/Visualisierung/Position_structure.png}
     \caption{Value Object \textit{Position}}
 \end{figure}
 
@@ -117,6 +150,7 @@ Kopplung und erlaubt die Einhaltung der Dependency Rule und des OCP.
 Es kann auf einfache Weise die Persistenzmethode ausgetauscht werden,
 ohne dass andere Schichten von den Änderungen betroffen sind.
 
+\enlargethispage{2\baselineskip}
 \vspace{0.5cm}
 \begin{figure}[H]
     \centering
