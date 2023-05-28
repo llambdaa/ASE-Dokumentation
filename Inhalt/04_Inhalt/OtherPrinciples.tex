@@ -84,3 +84,134 @@ Insgesamt erfüllt die Klasse "Buffer" das Prinzip der hohen Kohäsion, indem si
 \fi
 
 \section{Don't Repeat Yourself (DRY)}
+
+Der erste Code zeigt den Zustand vor der Klassen \textit{Entity},
+\textit{Player} und \textit{Goblin} vor der Code-Deduplikation 
+(Commit 3d905e1). Tatsächlich waren allerdings noch einige mehr
+Klassen auf ähnliche Weise betroffen.
+
+Zu sehen ist, dass die Konstruktor-Funktion von \textit{Entity} nicht
+die Möglichkeit bietet alle Felder zu setzen. Diese sind jedoch wichtig
+bei der Definition von konkreten Entities, wie \textit{Goblin} oder
+\textit{Player}. Daher muss jede Klasse, welche von \textit{Entity}
+erbt, die Felder \textit{weapon} und \textit{position} manuell
+gesetzt bekommen.
+
+Der zweite Code zeigt, dass die Konstruktor-Funktion entsprechend
+erweitert wurde, sodass die Felder nun auch als Argumente entgegengenommen
+und an einer zentralen Stelle (\textit{Entity}) entsprechend gesetzt
+werden (Commit b125cf0). Damit ist \textit{DRY} erfüllt. Statt
+mehrfacher gleicherartiger Wertezuweisungen der Felder in allen
+Kindsklassen von \textit{Entity}, geschieht die Zuweisung nur noch an
+einer Stelle. 
+
+Zum einen verbessert dies die Komplexität und Wartbarkeit, weil nicht
+mehr mehrere Stellen geändert werden müssen, sollte sich z.B. der
+Name eines betroffenen Feldes ändern. Zum anderen ist es lesbarer und
+weniger fehleranfällig.
+
+\lstset{ 
+    language=Java,
+    basicstyle=\fontfamily{pcr}\selectfont\footnotesize,
+    keywordstyle=\color{purple},
+    numberstyle=\tiny,    
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false, 
+    frame=single,
+    tabsize=2,
+    rulesepcolor=\color{gray},
+    rulecolor=\color{black},
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false, 
+}
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Don't Repeat Yourself (Vorher)}]
+    public abstract class Entity {
+        protected String name;
+        protected int health;
+        protected Position position;
+        protected int baseArmor;
+        protected int strength;
+        protected Weapon weapon;
+     
+     
+        public Entity(int health, int baseArmor, int strength, String name){
+            this.health = health;
+            this.baseArmor = baseArmor;
+            this.strength = strength;
+            this.name = name;
+        }
+        
+        ...
+    }     
+
+    public class Player extends Entity {
+
+        public Player(String name) {
+            super(100, 5, 10, name);
+            weapon = Weapon.FISTS;
+            position = new Position(0, 0);
+        }
+
+
+        public String getName() {
+            return name;
+        }
+
+    }
+
+    public class Goblin extends Entity {
+        public Goblin(Position position) {
+            super(10, 2, 5, "Goblin");
+            weapon = Weapon.DAGGER;
+            this.position = position;
+        }
+    }
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Don't Repeat Yourself (Nachher)}]
+    public abstract class Entity {
+        protected String name;
+        protected int health;
+        protected Position position;
+        protected int baseArmor;
+        protected int strength;
+        protected Weapon weapon;
+     
+        public Entity(int health, int baseArmor, int strength, String name, Weapon weapon, Position position){
+            this.health = health;
+            this.baseArmor = baseArmor;
+            this.strength = strength;
+            this.name = name;
+            this.weapon = weapon;
+            this.position = position;
+        }
+     
+        ...
+    }
+
+    public class Player extends Entity {
+
+        public Player(String name) {
+            super(100, 5, 10, name, Weapon.FISTS, new Position(0,0));
+        }
+
+        public String getName() {
+            return name;
+        }
+
+    }
+
+    public class Goblin extends Entity {
+
+        public Goblin(Position position) {
+            super(10, 2, 5, "Goblin", Weapon.DAGGER, position);
+        }
+
+    }
+
+\end{lstlisting}
