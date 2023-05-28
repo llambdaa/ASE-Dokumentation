@@ -1,9 +1,42 @@
 \chapter{Entwurfsmuster}
 
-\section{Entwurfsmuster: Fabrik}
+\section{Entwurfsmuster: Erbauer}
+Die nachfolgende Abbildung zeigt ein vereinfachtes UML-Diagramm der
+Klasse \textit{IsaacLevelGenerator}, welches das Interface
+\textit{ILevelGenerator} implementiert. Das Interface dient als
+Abstraktion eines beliebigen Level-Generators, der
+\textit{IsaacLevelGenerator} ist eine konkrete Implementation.
+
+Es handelt sich hierbei um das Entwurfsmuster \textbf{Erbauer}.
+In diesem Fall ist \textit{IsaacLevelGenerator} ein konkreter Erbauer. 
+Durch die Verwendung des \textit{ILevelGenerator} Interfaces kann
+die Konstruktionsmechanik für ein Level jedoch beliebig ausgetauscht
+werden.
+
+Die \textit{next()}-Funktion des \textit{IsaacLevelGenerator}
+beschreibt eine mehrschrittige komplexe Logik zur Erzeugung von
+\textit{Level}-Objekten. Sie kann genutzt werden, um immer wieder
+gleiche Objekte zu generieren. Die Verwendung eines \textit{Erbauers}
+erlaubt die Trennung zwischen der komplexen Erstellung eines Objektes
+und  seiner Klassenrepräsentation. Zudem versteckt der Generator die
+interne Repräsentation während der Level-Erstellung. Letztlich wird
+nur das fertige Produkt zur Verfügung gestellt.
+
+Die Verwendung des \textit{Erbauer}-Musters erhöht die Modularität
+durch Austauschbarkeit und die Verwendung eines Interfaces. Zudem
+vermindert es die Komplexität, da unterschiedliche komplexe
+Erzeugungsprozesse jeweilig in einem \textit{Erbauer} gebunden sind.
+Alles zusammen erlaubt auch einfache Erweiterbarkeit, da immer neue
+\textit{Erbauer} anstelle des Interfaces gesetzt werden können.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/IsaacLevelGenerator_structure.png}
+    \caption{Entwurfsmuster: Erbauer}
+\end{figure}
 
 \section{Entwurfsmuster: Kompositum}
-
 Die nachfolgende Abbildung zeigt das UML-Diagramm der Klassen
 \textit{Buffer} und \textit{CompositeBuffer}, wobei letztere von
 ersterer erbt. Beide Klassen finden Verwendung in der Spielanzeige
@@ -39,5 +72,5 @@ Elementen zu unterscheiden.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{Bilder/Visualisierung/CompositeBuffer_structure.png}
-    \caption{KeyInputHandlerFake}
+    \caption{Entwurfsmuster: Kompositum}
 \end{figure}
