@@ -125,3 +125,26 @@ ohne dass andere Schichten von den Änderungen betroffen sind.
 \end{figure}
 
 \section{Aggregates}
+Die nachfolgende Abbildung zeigt ein gekürztes UML-Diagramm zur Klasse
+\textit{Room}, welche ein \textit{Aggregate} darstellt. Der \textit{Room}
+stellt das Wurzel-Element der Verwaltungseinheit dar. Ihr zugeordnet
+sind wichtige Eigenschaften, welche einen abgegrenzen Spielbereich
+ausmachen. Dazu gehören Spielfeldmaße (\textit{width} und \textit{height}),
+der \textit{Player}, Türen (\textit{Door}), \textit{Items} und Gegner
+(\textit{Enemy}).
+
+Das Aggregat ist genau wie seine Bestandteile in der \textit{domain}-
+Schicht befindlich. Es sorgt für korrekte und konsistente Interaktion
+mit seinen Bestandteilen. So gibt es etwa Verwaltungsfunktionen wie
+\textit{addItem()} zum Hinzufügen von Items und \textit{removeItem()}
+zum Entfernen. Jedes Element ist genau einem Raum zugeordnet. Es findet
+keine Mehrfachverwaltung statt. Zudem reduziert es die Fehleranfälligkeit
+und Komplexität durch Query-Funktionen wie \textit{getClosestEntity()},
+welche enthaltene Informationen berechnet und weiterreicht. 
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Bilder/Visualisierung/RoomAggregate_structure.png}
+    \caption{Aggregates \textit{Room}}
+\end{figure}
