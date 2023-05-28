@@ -68,19 +68,56 @@ Die Entkopplung der Klassen erhöht die Flexibilität, Wartbarkeit und Testbarke
 \fi
 
 \section{Analyse GRASP: Hohe Kohäsion}
+Das nachfolgende UML-Diagramm zeigt die Klasse \textit{Buffer}, welche
+eine sehr hohe Kohäsion aufweist. Sie beschreibt einen Puffer für
+Anzeigedaten. Der Puffer enthält sowohl Farb- als auch Zeichendaten
+und besitzt eine Größendefinition.
+
+Die Kohäsion ist sehr hoch, weil die Klasse eine einzige
+Verantwortlichkeit hat, nämlich die Verwaltung des Puffers. Die
+enthaltenen Funktionen sind darüber hinaus lediglich für die 
+Manipulation und Anzeige des Pufferinhalts verantwortlich. Sie bilden
+verschiedene Manipulationsmethoden ab. Zudem existiert keine externe
+Abhängigkeit. Die komplette Logik für die Klasse ist in ihr vereint.
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Bilder/Visualisierung/Buffer_structure.png}
+    \caption{Analyse GRASP: Hohe Kohäsion}
+\end{figure}
 
 \iffalse
-Die gegebene Klasse "Buffer" erfüllt das Kriterium der hohen Kohäsion, da sie eine klare und spezifische Aufgabe erfüllt, nämlich die Verwaltung eines Puffers für die Darstellung von Zeichen und Farben. Hier sind einige Gründe, warum sie hohe Kohäsion aufweist:
+Die gegebene Klasse "Buffer" erfüllt das Kriterium der hohen Kohäsion,
+da sie eine klare und spezifische Aufgabe erfüllt, nämlich die
+Verwaltung eines Puffers für die Darstellung von Zeichen und Farben.
+Hier sind einige Gründe, warum sie hohe Kohäsion aufweist:
 
-Zusammengehörigkeit: Die Methoden und Eigenschaften der Klasse dienen alle dem Zweck der Pufferverwaltung. Sie ermöglichen das Setzen von Zeichen und Farben, das Hinzufügen von Inhalten, das Erzeugen von speziellen Puffern (z. B. mit Rahmen) und die Darstellung des Puffers.
+Zusammengehörigkeit: Die Methoden und Eigenschaften der Klasse dienen
+alle dem Zweck der Pufferverwaltung. Sie ermöglichen das Setzen von
+Zeichen und Farben, das Hinzufügen von Inhalten, das Erzeugen von
+speziellen Puffern (z. B. mit Rahmen) und die Darstellung des Puffers.
 
-Klare Verantwortlichkeiten: Die Klasse konzentriert sich ausschließlich auf die Pufferverwaltung und enthält keine Funktionalitäten, die nicht damit verbunden sind. Sie bietet Methoden zum Setzen von Zeichen, Farben, zum Schreiben von Inhalten, zum Erzeugen spezieller Puffer und zur Darstellung des Puffers.
+Klare Verantwortlichkeiten: Die Klasse konzentriert sich ausschließlich
+auf die Pufferverwaltung und enthält keine Funktionalitäten, die nicht
+damit verbunden sind. Sie bietet Methoden zum Setzen von Zeichen,
+Farben, zum Schreiben von Inhalten, zum Erzeugen spezieller Puffer und
+zur Darstellung des Puffers.
 
-Geringe Abhängigkeit von externen Komponenten: Die Klasse hat keine Abhängigkeiten von anderen Klassen oder externen Ressourcen. Sie enthält alle erforderlichen Methoden und Datenstrukturen, um die Pufferverwaltung durchzuführen.
+Geringe Abhängigkeit von externen Komponenten: Die Klasse hat keine
+Abhängigkeiten von anderen Klassen oder externen Ressourcen. Sie
+enthält alle erforderlichen Methoden und Datenstrukturen, um die
+Pufferverwaltung durchzuführen.
 
-Einfache Wiederverwendbarkeit: Der Buffer kann in verschiedenen Anwendungen oder Modulen wiederverwendet werden, in denen eine Pufferverwaltung erforderlich ist. Die Klasse ist gut isoliert und unabhängig von anderen Teilen des Systems.
+Einfache Wiederverwendbarkeit: Der Buffer kann in verschiedenen
+Anwendungen oder Modulen wiederverwendet werden, in denen eine
+Pufferverwaltung erforderlich ist. Die Klasse ist gut isoliert und
+unabhängig von anderen Teilen des Systems.
 
-Insgesamt erfüllt die Klasse "Buffer" das Prinzip der hohen Kohäsion, indem sie eine klare und spezifische Aufgabe erfüllt und ihre Methoden und Eigenschaften darauf ausgerichtet sind. Dies erleichtert die Lesbarkeit, Wartbarkeit und Wiederverwendbarkeit des Codes.
+Insgesamt erfüllt die Klasse "Buffer" das Prinzip der hohen Kohäsion,
+indem sie eine klare und spezifische Aufgabe erfüllt und ihre Methoden
+und Eigenschaften darauf ausgerichtet sind. Dies erleichtert die
+Lesbarkeit, Wartbarkeit und Wiederverwendbarkeit des Codes.
 \fi
 
 \section{Don't Repeat Yourself (DRY)}
