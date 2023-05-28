@@ -67,9 +67,113 @@
 
 
 \section{Refactorings}
-\subsection{Rename Method}
+\subsection*{Extract Method}
 Der erste Code und das erste UML-Diagramm zeigen den Zustand vor
-dem Refactoring (Commit 3174f95). Dabei ist zu sehen, dass die \textit{place()}-Funktion
+dem Refactoring der Klasse Buffer (Commit 8ed9fae). Der \textit{Buffer}
+besitzt eine Zeichen-Matrix der Maße \texttt{width * height} und
+eine Farb-Matrix der gleichen Größe. In \textit{toString()} soll mit
+diesen Informationen ein String mit den gleichen Maßen erstellt werden.
+Dabei wird jedes Element der Zeichen-Matrix mit der entsprechenden
+Farbe konkateniert. Es gibt \texttt{height} Zeilen, welche letztlich
+zu einem \textit{block} zusammengesetzt werden. Das Ergebnis ist ein
+String, welcher den Inhalt des Buffers darstellen kann.
+
+Wie zu sehen, ist der Code allerdings nicht übersichtlich - durch
+kurze Variablenbenennung und Verschachtelungstiefe. Wie im zweiten
+Code erkennbar (Commit 2adfff4), ist der Code schon lesbarer geworden.
+Die \textit{appendCellToString()}-Funktion extrahiert die Logik
+zum Beschreiben des Strings, welche zuvor die Schachtelungstiefe
+und Komplexität erhöht hat. In der \textit{toString()}-Funktion
+wird nun lediglich die Iteration über die Matrizen vorgenommen,
+welche sich allerdings auf zwei Schleifen beschränkt. Zudem sind
+im gleichen Zuge kleine Veränderungen an \textit{toString()}
+vorgenommen worden.
+
+Insgesamt hat die Extraktion in die \textit{appendCellToString()}-Funktion
+die Leserlichkeit und Verständlichkeit der \textit(toString())-Funktion
+maßgeblich erhöht.
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Refactorings: Extract Method (Vorher)}]
+    @Override
+    public String toString() {
+        boolean colored = false;
+        StringBuilder block = new StringBuilder();
+        StringBuilder line = new StringBuilder();
+        
+        for (int h = 0; h < this.symbols.length; h++) {
+            char[] horizontal = this.symbols[h];
+            for (int w = 0; w < horizontal.length; w++) {
+                String color = this.colors[h][w];
+                if (color != null) {
+                    line.append(color);
+                    colored = true;
+                } else if (colored) {
+                    line.append(ANSIColor.RESET);
+                    colored = false;
+                }
+                
+                char symbol = horizontal[w];
+                line.append(symbol);
+            }
+            
+            block.append(line);
+            block.append("\n");
+            line.setLength(0);
+        }
+        
+        return block.toString();
+    }
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Bilder/Visualisierung/BufferBeforeRefactor_structure.png}
+    \caption{Refactorings: Extract Method (Vorher)}
+\end{figure}
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Refactorings: Extract Method (Nachher)}]
+    private void appendCellToString(int x, int y, StringBuilder result) {
+        String color = this.colors[y][x];
+        if (color != null) {
+            result.append(color);
+        }
+        
+        result.append(this.symbols[y][x]);
+        
+        if (color != null) {
+            result.append(ANSIColor.RESET);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (int h = 0; h < this.symbols.length; h++) {
+            for (int w = 0; w < this.symbols[h].length; w++) {
+                this.appendCellToString(w, h, result);
+            }
+            
+            result.append("\n");
+        }
+        
+        return result.toString();
+    }
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Bilder/Visualisierung/BufferAfterRestructure_structure.png}
+    \caption{Refactorings: Extract Method (Nachher)}
+\end{figure}
+
+\subsection*{Rename Method}
+Der erste Code und das erste UML-Diagramm zeigen den Zustand vor
+dem Refactoring der Klasse \textit{CompositeBuffer} (Commit 3174f95).
+Dabei ist zu sehen, dass die \textit{place()}-Funktion
 mit einer Liste namens \textit{fixedComponents} interagiert. Hier
 scheint es um fixierte \textit{Buffer} zu gehen, was der Funktionsname
 aber nicht zum Ausdruck bringt. Dabei ist \textit{place()} ein
