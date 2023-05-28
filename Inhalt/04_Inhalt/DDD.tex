@@ -1,6 +1,74 @@
 \chapter{Domain Driven Design}
 
-\section{Ubiquitous Language}
+\section{Ubiquitous Language (UL)}
+\subsection*{Item}
+
+\textbf{Bedeutung}: Ein \textit{Item} ist ein nicht-belebtes Objekt,
+welches einen konkreten Gegendstand im Spiel wie etwa Waffen,
+Rüstungen oder Münzen repräsentiert. Mit ihm kann interagiert werden.
+Ein Item erfüllt verschiedene Funktionen abhängig vom Typ, wie etwa
+Heilung, Stärkung des Spielers oder Beeinflussung des Spielstandes.
+
+\textbf{Begründung}: Die Verwendung des Begriffes in der UL erlaubt
+eine einheitliche Kommunikation zwischen den Entwicklern und Designern.
+Hinzu kommt, dass der Begriff grundlegend in der Spieleentwicklung ist.
+Somit lässt sich leichter festlegen, wie Items designed und logisch
+in das Spielgeschehen integriert werden und wie diese die Spielerfahrung
+formen.
+
+
+
+\subsection*{Room}
+
+\textbf{Bedeutung}: Der Begriff \textit{Room} definiert einen
+abgegrenzten Bereich der Spielwelt. Jeder Raum stellt für den Spieler
+eine neue Herausforderung dar. In ihm befinden sich neue Gegner und
+neue Items. Besonders ersichtlich wird die Abgrenzung der Räume, wenn
+sie abgeschlossen sind, weil in ihnen noch Gegner leben.
+
+\textbf{Begründung}: Der Begriff Room in der UL ist essentiell wichtig,
+da Entwickler und Designer sich absprechen müssen, um den technischen
+und stilistischen Entwurf für abgegrenze Spielbereiche zu schaffen.
+Für Entwickler ist der Begriff besonders prägend im Bereich der Welt-
+Generierung. Für Designer ist er wichtig, um zwischen verschiedenen
+Typen zu unterscheiden, welche unterschiedlich ausgebildet werden.
+
+
+
+\subsection*{Level}
+
+\textbf{Bedeutung}: Das \textit{Level} repräsentiert eine abgegrenzte
+Spielstufe. Es gilt dieses komplett zu absolvieren, bis man den
+End-Raum des Levels gefunden hat. Es stellt eine Einheit einzelner mit
+einander verbundener Räume dar. Levels haben Fortschrittsmechanismen
+bezogen auf die Schwierigkeit der Räume.
+
+\textbf{Begründung}: Der Begriff \textit{Level} ist in der UL sehr
+wichtig, da es einen Strukturbegriff darstellt. Er gliedert die
+Spielwelt weiter als übergeordneter Einheit über den Räumen. Daher
+ist der Begriff relevant für Entwickler im Bezug auf die Welt-Generierung
+und für Designer im Bezug auf die Schwierigkeitsentwicklung und den
+Stil.
+
+
+
+\subsection*{Player}
+
+\textbf{Bedeutung}: Der \textit{Player} stellt die Spielfigur dar,
+durch welche der Spielende mit der virtuellen Umgebung interagieren
+kann. Er stellt ein sterbliches Lebewesen dar, welches den Umgang mit
+der Spielwelt maßgeblich beeinflusst: Das oberste Ziel ist überleben.
+Der Spieler kann Items aufsammeln, Gegnern schaden zufügen, von ihnen
+Schaden nehmen und durch die Räume gehen.
+
+\textbf{Begründung}: Die Verwendung des Begriffs \textit{Player}
+schafft Klarheit in der Abgrenzung zu anderen virtuellen Lebewesen
+wie den Gegnern. Der Spieler hat eine gesonderte Rolle und benötigt
+daher wesentlichen Mehraufwand in der Entwicklung und Design. Seine
+Interaktionen prägen das Spielerlebnis. Technisch gesehen teilt sich
+ein Spieler Eigenschaften mit anderen Lebewesen. Daher ist eine klare
+Definition der Spielfigur unerlässlich für die Entwicklung selbst, um
+die herausstellenden Merkmale klar abzugrenzen.
 
 \section{Entities}
 

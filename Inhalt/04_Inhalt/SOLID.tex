@@ -54,6 +54,8 @@ benutzt werden.
 \end{figure}
 
 \subsection{Negativ-Beispiel}
+
+\iffalse
 Die nachfolgende Abbildung zeigt das UML-Diagramm der Klasse
 \textit{KeyInputHandler}. Dieses ist in der Schicht \textit{plugins}
 angesiedelt. Es hält eine \textit{Registry} inne, in welcher zu einigen
@@ -72,6 +74,7 @@ aufgenommen und mit Tasten belegt werden. Dies widerspricht dem
     \includegraphics[width=0.5\linewidth]{Bilder/Visualisierung/KeyInputHandlerOCPViolation_structure.png}
     \caption{Analyse Open-Closed-Principle: Negativ}
 \end{figure}
+\fi
 
 \section{Analyse Dependency-Inversion-Principle (DIP)}
 \subsection{Positiv-Beispiel}
@@ -103,3 +106,9 @@ dass die Klasse \textit{Game} davon direkt betroffen ist.
 \end{figure}
 
 \subsection{Negativ-Beispiel}
+\vspace{0.5cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{Bilder/Visualisierung/Game_structure.png}
+    \caption{Analyse Dependency-Inversion-Principle: Negativ}
+\end{figure}

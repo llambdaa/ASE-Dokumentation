@@ -2,4 +2,68 @@
 
 \section{Code Smells}
 
+\subsection*{}
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Code Smell I (Vorher)}]
+    @Override
+    public void move(Direction direction) {
+        RoomPosition target = this.getPosition().getAdjacentPosition(direction);
+        if (target.isValid() && target.isFree()) {
+            if (this.getRoom() instanceof BossRoom boss) {
+                RoomPosition trapdoor = boss.getTrapdoorPosition();
+                
+                if (target.equals(trapdoor) && this.getRoom().isCleared()) {
+                    this.game.nextLevel();
+                }
+            }
+            
+            this.setPosition(target);
+            
+            Item underneath = this.getRoom().getItemUnderneath(this.getPosition());
+            // this.game.setItemUnderneath(underneath);
+        } else {
+            if (!this.getRoom().isCleared()) {
+                return;
+            }
+            
+            this.getRoom().getDoors().forEach(door -> {
+                if (door.getRoomPosition().equals(target)) {
+                    this.game.getLevel().enter(door);
+                }
+            });
+        }
+    }
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{lstlisting}[caption={Code Smell I (Nachher)}]
+    @Override
+    public void move(Direction direction) {
+        RoomPosition target = this.getPosition().getAdjacentPosition(direction);
+        if (target.isValid() && target.isFree()) {
+            if (this.getRoom().isBossRoom()) {
+                RoomPosition trapdoor = this.getRoom().getTrapdoorPosition();
+                if (target.equals(trapdoor) && this.getRoom().isCleared()) {
+                    this.game.nextLevel();
+                }
+            }
+            
+            this.setPosition(target);
+            
+            Item underneath = this.getRoom().getItemAt(this.getPosition());
+            // this.game.setItemUnderneath(underneath);
+        } else {
+            if (!this.getRoom().isCleared()) {
+                return;
+            }
+            
+            Door door = this.getRoom().getDoorAt(target);
+            if (door != null) {
+                this.game.getLevel().enter(door);
+            }
+        }
+    }
+\end{lstlisting}
+
+
 \section{Refactorings}
