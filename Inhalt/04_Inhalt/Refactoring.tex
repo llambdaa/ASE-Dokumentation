@@ -61,68 +61,114 @@ Kommentare gut verständlich.
 \end{lstlisting}
 
 \subsection*{Large Class}
+Der erste Code zeigt den Zustand vor dem Refactoring der Klasse 
+\textit{LevelGenerator}, mittlerweile \textit{IsaacLevelGenerator}
+genannt (Commit 1519579). Er zeigt ein Beispiel für den Code Smell
+\textit{Large Class}. Die Klasse ist viel zu umfangreich, denn ihr
+eigentliches Ziel ist es eine Generatorfunktion für Level bereitzustellen.
+Tatsächlich macht sie das und enthält noch zusätzlich einige Methoden
+zur Befüllung der Level mit Gegnern und Items. Dies ist jedoch ein
+Zwischenstand. Zuvor gab es entsprechende Helferfunktionen auch noch
+für die Schritte davor.
+
+Daher wurden zusammengehörige Funktionen, welche sich mit der
+Population beschäftigen, in eine andere Klasse namens
+\textit{PopulatedFloorPlan} umgezogen (Commit 86490a6). Die
+Implementation dieser Klasse sei hier erspart.
+
+Die Hauptklasse \textit{LevelGenerator} ist dadurch sehr viel kleiner
+geworden, was die Wartbarkeit und Leserlichkeit erhöht. Ihre einzige
+Kernkompetenz, das Generieren von Leveln mittels der
+\textit{next()}-Funktion bleibt erhalten.
+
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Code Smell I (Vorher)}]
-    @Override
-    public void move(Direction direction) {
-        RoomPosition target = this.getPosition().getAdjacentPosition(direction);
-        if (target.isValid() && target.isFree()) {
-            if (this.getRoom() instanceof BossRoom boss) {
-                RoomPosition trapdoor = boss.getTrapdoorPosition();
-                
-                if (target.equals(trapdoor) && this.getRoom().isCleared()) {
-                    this.game.nextLevel();
+\begin{lstlisting}[caption={Code Smell: Large Class (Vorher)}]
+    public Level next() {
+        PrototypicBasicFloorPlan basic = PrototypicBasicFloorPlan.make();
+        PrototypicAggregatedFloorPlan aggregated = PrototypicAggregatedFloorPlan.from(basic);
+        MaterializedFloorPlan materialized = MaterializedFloorPlan.from(aggregated, this.game);
+        
+        // LevelGenerator.populate(materializedFloorPlan.getRooms());
+        Level result = new Level(this.stage, game.getPlayer(), null);
+        this.stage++;
+        return result;
+    }
+    
+    private static void populate(Set<Room> rooms) {
+        final int enemyRoomCount = (int) (rooms.size() * LevelGenerator.ENEMY_POPULATION_RATIO);
+        final int itemRoomCount = (int) (rooms.size() * LevelGenerator.ITEM_POPULATION_RATIO);
+        CollectionSelector<Room> range = new CollectionSelector<>(new ArrayList<>(rooms));
+        List<Room> enemyRooms = range.random(enemyRoomCount).get();
+        List<Room> itemRooms = range.random(itemRoomCount).get();
+        
+        LevelGenerator.populateWithEnemies(enemyRooms);
+        LevelGenerator.populateWithItems(itemRooms);
+    }
+    
+    private static void populateWithEnemies(List<Room> enemyRooms) {
+        List<LivingEntityType> entityTypes = new ArrayList<>(List.of(LivingEntityType.values()));
+        entityTypes.remove(LivingEntityType.PLAYER);
+        CollectionSelector entityTypesRange = new CollectionSelector(entityTypes);
+        //int maxEnemyCount = Game.getInstance().getStage();
+        int maxEnemyCount = 1;
+        
+        enemyRooms.forEach(room -> {
+            int enemyCount = IntRange.from(1, maxEnemyCount).random();
+            for (int i = 0; i < enemyCount; i++) {
+                LivingEntityType type = (LivingEntityType) entityTypesRange.random(1).get().get(0);
+                RoomPosition free = room.getRandomOccupiablePosition();
+    
+                Enemy enemy = new Enemy(free, type);
+                room.addEnemy(enemy);
+            }
+        });
+    }
+    
+    private static void populateWithItems(List<Room> itemRooms) {
+        itemRooms.forEach(room -> {
+            RoomPosition free = room.getRandomOccupiablePosition();
+            boolean consumable = (IntRange.from(0, 1).random() == 1);
+            Item item;
+            
+            if (consumable) {
+                boolean heart = (IntRange.from(0, 1).random() == 1);
+                if (heart) {
+                    item = new HeartItem(free);
+                } else {
+                    item = new CoinItem(free);
+                }
+            } else {
+                boolean weapon = (IntRange.from(0, 1).random() == 1);
+                if (weapon) {
+                    CollectionSelector weaponTypesRange = new CollectionSelector(List.of(WeaponType.values()));
+                    WeaponType type = (WeaponType) weaponTypesRange.random(1).get().get(0);
+                    item = new WeaponItem(free, type);
+                } else {
+                    CollectionSelector armorTypeRange = new CollectionSelector(List.of(ArmorType.values()));
+                    ArmorType type = (ArmorType) armorTypeRange.random(1).get().get(0);
+                    item = new ArmorItem(free, type);
                 }
             }
             
-            this.setPosition(target);
-            
-            Item underneath = this.getRoom().getItemUnderneath(this.getPosition());
-            // this.game.setItemUnderneath(underneath);
-        } else {
-            if (!this.getRoom().isCleared()) {
-                return;
-            }
-            
-            this.getRoom().getDoors().forEach(door -> {
-                if (door.getRoomPosition().equals(target)) {
-                    this.game.getLevel().enter(door);
-                }
-            });
-        }
+            room.addItem(item);
+        });
     }
 \end{lstlisting}
 
 \vspace{0.5cm}
-\begin{lstlisting}[caption={Code Smell I (Nachher)}]
-    @Override
-    public void move(Direction direction) {
-        RoomPosition target = this.getPosition().getAdjacentPosition(direction);
-        if (target.isValid() && target.isFree()) {
-            if (this.getRoom().isBossRoom()) {
-                RoomPosition trapdoor = this.getRoom().getTrapdoorPosition();
-                if (target.equals(trapdoor) && this.getRoom().isCleared()) {
-                    this.game.nextLevel();
-                }
-            }
-            
-            this.setPosition(target);
-            
-            Item underneath = this.getRoom().getItemAt(this.getPosition());
-            // this.game.setItemUnderneath(underneath);
-        } else {
-            if (!this.getRoom().isCleared()) {
-                return;
-            }
-            
-            Door door = this.getRoom().getDoorAt(target);
-            if (door != null) {
-                this.game.getLevel().enter(door);
-            }
-        }
+\begin{lstlisting}[caption={Code Smell: Large Class (Nachher)}]
+    public Level next() {
+        PrototypicBasicFloorPlan basic = PrototypicBasicFloorPlan.make();
+        PrototypicAggregatedFloorPlan aggregated = PrototypicAggregatedFloorPlan.from(basic);
+        MaterializedFloorPlan materialized = MaterializedFloorPlan.from(aggregated, this.game);
+        PopulatedFloorPlan populated = PopulatedFloorPlan.from(materialized, this.game);
+        
+        Level result = new Level(this.stage, game.getPlayer(), populated.getSpawnRoom());
+        this.stage += 1;
+        
+        return result;
     }
 \end{lstlisting}
-
 
 \section{Refactorings}
 \subsection*{Extract Method}
